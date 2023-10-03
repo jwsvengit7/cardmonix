@@ -16,6 +16,7 @@ import com.cardmonix.cardmonix.response.ResponseFromUser;
 import com.cardmonix.cardmonix.security.JwtService;
 import com.cardmonix.cardmonix.service.AuthService;
 import com.cardmonix.cardmonix.service.Implementation.otpImpl.ConfirmEmailMessageImpl;
+import com.cardmonix.cardmonix.utils.DateUtils;
 import com.cardmonix.cardmonix.utils.RandomValues;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +32,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Optional;
 
 
 @Service
@@ -91,6 +93,21 @@ public class AuthServiceImpl implements  AuthService {
                 .expiresAt(new Date(System.currentTimeMillis() + expirationTime))
                 .build();
     }
+
+        @Override
+        public Boolean verify_token(String token) {
+            Optional<JwtToken> optionalJwtToken = jwtTokenRepository.findByToken(token);
+            if (optionalJwtToken.isPresent()) {
+                JwtToken jwtToken = optionalJwtToken.get();
+                return DateUtils.isExpired(jwtToken.getExpiresAt());
+            } else {
+                return false;
+            }
+        }
+
+
+
+
     @Override
     public String resend_link_password(String email) {
         User user = verifyUser(email);

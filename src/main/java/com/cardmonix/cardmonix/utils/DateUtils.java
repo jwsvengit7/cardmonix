@@ -20,4 +20,11 @@ public class DateUtils {
     public static LocalDateTime convertDateToLocalDateTime(Date date) {
         return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
     }
+    public static boolean isExpired(Date expiresAt) {
+        if (expiresAt == null) {
+            return false;
+        }
+        Date currentDate = new Date();
+        return currentDate.after(expiresAt);
+    }
 }

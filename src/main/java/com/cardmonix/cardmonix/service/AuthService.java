@@ -11,5 +11,6 @@ public interface AuthService {
     ResponseFromUser LoginRequest(LoginRequest loginRequest);
     String resend_link_password(String email);
     String RegisterRequest(RegisterRequest registerRequest) throws MessagingException, UnsupportedEncodingException;
+    Boolean verify_token(String token);
 
 }

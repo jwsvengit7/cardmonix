@@ -39,6 +39,13 @@ public class UserAuthController {
         ApiResponse<String> apiResponse = new ApiResponse<>(authService.resend_link_password(email));
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
+
+    @CrossOrigin("*")
+    @GetMapping("/verify-token/{token}")
+    public ResponseEntity<ApiResponse<Boolean>> verifyToken(@PathVariable String token) {
+        ApiResponse<Boolean> apiResponse = new ApiResponse<>(authService.verify_token(token));
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+    }
     @CrossOrigin("*")
     @PostMapping("/otp_verify")
     public ResponseEntity<ApiResponse<String>> verifyUser(@RequestBody OtpValidateRequest otpValidateRequest){
