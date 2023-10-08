@@ -17,7 +17,6 @@ public class UserResponse {
     private String dob;
     private String profile;
     private  Role role;
-
     private Balance balance;
 
 }

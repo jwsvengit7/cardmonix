@@ -3,13 +3,12 @@ package com.cardmonix.cardmonix.service.Implementation.adminImpl;
 import com.cardmonix.cardmonix.domain.constant.Currency;
 import com.cardmonix.cardmonix.domain.constant.Status;
 import com.cardmonix.cardmonix.domain.entity.account.Deposit;
+import com.cardmonix.cardmonix.domain.entity.coins.Giftcard;
 import com.cardmonix.cardmonix.domain.entity.userModel.Balance;
 import com.cardmonix.cardmonix.domain.entity.userModel.CoinWallet;
 import com.cardmonix.cardmonix.domain.entity.userModel.User;
-import com.cardmonix.cardmonix.domain.repository.BalanceRepository;
-import com.cardmonix.cardmonix.domain.repository.CoinWalletRepository;
-import com.cardmonix.cardmonix.domain.repository.DepositRepository;
-import com.cardmonix.cardmonix.domain.repository.UserRepository;
+import com.cardmonix.cardmonix.domain.repository.*;
+import com.cardmonix.cardmonix.eceptions.GiftcardNotFoundExceptions;
 import com.cardmonix.cardmonix.eceptions.ProductNotFoundException;
 import com.cardmonix.cardmonix.eceptions.UserNotFoundException;
 import com.cardmonix.cardmonix.response.DepositReponse;
@@ -24,6 +23,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -33,6 +33,7 @@ public class AdminServiceImpl implements AdminService {
     private final AuthServiceImpl authService;
     private final CoinWalletRepository coinWalletRepository;
     private final BalanceRepository balanceRepository;
+    private final GiftcardRepository giftcardRepository;
     private final DepositRepository depositRepository;
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
@@ -60,6 +61,37 @@ public class AdminServiceImpl implements AdminService {
         return depositRepository.findAll()
                 .stream().map((c)->
                         modelMapper.map(c,DepositReponse.class)).collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional
+    public String confirmGiftcardDeposit(Long giftcardId) {
+       authService.verifyUserAndGetEmail().get().getEmail();
+        Giftcard giftcard = findGiftcardById(giftcardId);
+        giftcard.setStatus(Status.CONFIRM);
+        giftcardRepository.save(giftcard);
+
+        User user = giftcard.getUser();
+        updateBalance(user, giftcard.getAmount());
+        return "Giftcard has been confirmed successfully";
+    }
+
+    private Giftcard findGiftcardById(Long giftcardId) {
+        return giftcardRepository.findById(giftcardId)
+                .orElseThrow(() -> new GiftcardNotFoundExceptions("Giftcard not found"));
+    }
+
+    private void updateBalance(User user, double amount) {
+        Balance balance = user.getBalance();
+        if (balance != null) {
+            double giftcardAmount = balance.getGiftcard_amount() + amount;
+            balance.setGiftcard_amount(giftcardAmount);
+        } else {
+            balance = new Balance();
+            balance.setGiftcard_amount(amount);
+            user.setBalance(balance);
+        }
+        balanceRepository.save(balance);
     }
 
     @Override

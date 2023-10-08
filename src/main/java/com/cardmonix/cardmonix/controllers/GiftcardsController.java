@@ -28,9 +28,10 @@ public class GiftcardsController  {
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
     @CrossOrigin("*")
-    @PostMapping(value = "/create-giftcard",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<ApiResponse<String>> saleGiftcards(@RequestBody SaleGiftcardRequest request, @RequestParam("file") MultipartFile file){
-        ApiResponse<String> apiResponse = new ApiResponse<>(sellGiftcardService.saleGiftcards(request,file));
+    @PostMapping(value = "/create-giftcard")
+    public ResponseEntity<ApiResponse<String>> saleGiftcards(@RequestParam("request") String request, @RequestParam("file") MultipartFile file){
+        SaleGiftcardRequest saleGiftcardRequest = new Gson().fromJson(request, SaleGiftcardRequest.class);
+        ApiResponse<String> apiResponse = new ApiResponse<>(sellGiftcardService.saleGiftcards(saleGiftcardRequest,file));
         return new ResponseEntity<>(apiResponse,HttpStatus.OK);
 
     }

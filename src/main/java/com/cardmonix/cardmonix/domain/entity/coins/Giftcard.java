@@ -1,5 +1,6 @@
 package com.cardmonix.cardmonix.domain.entity.coins;
 
+import com.cardmonix.cardmonix.domain.constant.Status;
 import com.cardmonix.cardmonix.domain.entity.userModel.User;
 import jakarta.persistence.*;
 import lombok.*;
@@ -22,7 +23,8 @@ public class Giftcard {
     private Double amount;
     private LocalDateTime localDateTime;
     private String trace;
-    private Boolean status;
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
     private String imageUrl;
     @ManyToOne(cascade = CascadeType.ALL)

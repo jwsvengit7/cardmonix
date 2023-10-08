@@ -23,6 +23,12 @@ public class AdminController {
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
     @CrossOrigin("*")
+    @GetMapping("/confirm-giftcard/{giftcardId}")
+    public ResponseEntity<ApiResponse<String>> confirmGiftcard(@PathVariable Long giftcardId){
+        ApiResponse<String> apiResponse = new ApiResponse<>(adminService.confirmGiftcardDeposit(giftcardId));
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+    }
+    @CrossOrigin("*")
     @GetMapping("/get-all-deposit")
     public ResponseEntity<ApiResponse<List<DepositReponse>>> getAllDeposit(){
         ApiResponse<List<DepositReponse>> apiResponse = new ApiResponse<>(adminService.getAllDeposit());

@@ -18,6 +18,9 @@ public class Balance {
     private Long balaceId;
     @Column(name = "amount")
     private Double amount;
+
+    @Column(name = "giftcard_amount")
+    private Double giftcard_amount;
     @Column(name = "currency")
     @Enumerated(EnumType.STRING)
     private Currency currency;

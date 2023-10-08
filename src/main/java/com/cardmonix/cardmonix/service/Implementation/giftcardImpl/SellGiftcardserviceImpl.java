@@ -1,6 +1,7 @@
 package com.cardmonix.cardmonix.service.Implementation.giftcardImpl;
 
 import com.cardmonix.cardmonix.configurations.CloudinaryConfig;
+import com.cardmonix.cardmonix.domain.constant.Status;
 import com.cardmonix.cardmonix.domain.entity.coins.Giftcard;
 import com.cardmonix.cardmonix.domain.entity.userModel.User;
 import com.cardmonix.cardmonix.domain.repository.GiftcardRepository;
@@ -27,7 +28,7 @@ public class SellGiftcardserviceImpl implements SellGiftcardService {
         Giftcard giftcard = Giftcard.builder()
                 .amount(saleGiftcardRequest.getAmount())
                 .type(saleGiftcardRequest.getName())
-                .status(false)
+                .status(Status.PENDING)
                 .imageUrl(cloudinaryConfig.uploadPicture(file, RandomValues.generateRandom()+System.currentTimeMillis()))
                 .user(user)
                 .build();

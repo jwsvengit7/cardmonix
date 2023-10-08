@@ -11,6 +11,7 @@ public interface AdminService {
     void deleteUser(Long userId);
     UserResponse getUserById(Long id);
     List<UserResponse> getAllUsers();
+    String confirmGiftcardDeposit(Long giftcardId);
 
     List<DepositReponse> getAllDeposit();
 }

@@ -18,6 +18,7 @@ import com.cardmonix.cardmonix.service.AuthService;
 import com.cardmonix.cardmonix.service.Implementation.otpImpl.ConfirmEmailMessageImpl;
 import com.cardmonix.cardmonix.utils.DateUtils;
 import com.cardmonix.cardmonix.utils.RandomValues;
+import com.cardmonix.cardmonix.utils.UserUtils;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -105,9 +106,6 @@ public class AuthServiceImpl implements  AuthService {
             }
         }
 
-
-
-
     @Override
     public String resend_link_password(String email) {
         User user = verifyUser(email);
@@ -147,6 +145,10 @@ public class AuthServiceImpl implements  AuthService {
           if(userRepository.existsByEmail(email)){
               throw new UserNotEnabledException("USER IS ENABLED");
           }
+    }
+
+    public Optional<User> verifyUserAndGetEmail(){
+        return userRepository.findByEmail(UserUtils.getAccessTokenEmail());
     }
     public User findById(Long id){
         return userRepository.findById(id)
