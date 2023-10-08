@@ -131,7 +131,8 @@ public class DepositServiceImpl implements ApplicationRunner,DepositService {
     @Override
     public List<DepositReponse> getAllDepositByUser(Long userId){
         User user = authServiceImplentation.verifyUser(UserUtils.getAccessTokenEmail());
-        if(userId.equals(user.getId())) {
+        System.out.println(user.getId());
+        if(!userId.equals(user.getId())) {
             throw new UserNotFoundException("User not found with deposit");
         }
         return user.getDeposits().stream().map((value)->modelMapper.map(value,DepositReponse.class)).collect(Collectors.toList());
