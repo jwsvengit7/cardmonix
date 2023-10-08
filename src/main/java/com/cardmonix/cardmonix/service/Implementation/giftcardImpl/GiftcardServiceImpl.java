@@ -2,12 +2,16 @@ package com.cardmonix.cardmonix.service.Implementation.giftcardImpl;
 
 import com.cardmonix.cardmonix.domain.constant.GiftCards;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+
+
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class GiftcardServiceImpl {
 
     public List<GiftcardObject> getGiftcards(){
@@ -15,7 +19,7 @@ public class GiftcardServiceImpl {
         for (GiftCards giftCard : GiftCards.values()) {
             allTypes.add(new GiftcardObject(giftCard.getImage(),giftCard.getAmount(), giftCard.getType()));
         }
-        System.out.println(allTypes);
+        log.info("{} ",allTypes);
         return allTypes;
     }
 }

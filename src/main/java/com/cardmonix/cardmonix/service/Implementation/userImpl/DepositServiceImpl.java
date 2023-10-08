@@ -9,6 +9,7 @@ import com.cardmonix.cardmonix.domain.entity.userModel.CoinWallet;
 import com.cardmonix.cardmonix.domain.entity.userModel.User;
 import com.cardmonix.cardmonix.domain.repository.*;
 import com.cardmonix.cardmonix.eceptions.InsufficientFundException;
+import com.cardmonix.cardmonix.eceptions.UserNotFoundException;
 import com.cardmonix.cardmonix.events.PendingDeposit;
 import com.cardmonix.cardmonix.request.RequestFromCoins;
 import com.cardmonix.cardmonix.request.TradeCoinRequest;
@@ -128,8 +129,11 @@ public class DepositServiceImpl implements ApplicationRunner,DepositService {
 
 
     @Override
-    public List<DepositReponse> getAllDepositByUser(){
+    public List<DepositReponse> getAllDepositByUser(Long userId){
         User user = authServiceImplentation.verifyUser(UserUtils.getAccessTokenEmail());
+        if(userId.equals(user.getId())) {
+            throw new UserNotFoundException("User not found with deposit");
+        }
         return user.getDeposits().stream().map((value)->modelMapper.map(value,DepositReponse.class)).collect(Collectors.toList());
 
     }
@@ -163,12 +167,7 @@ public class DepositServiceImpl implements ApplicationRunner,DepositService {
     }
 
 
-    @Override
-    public List<DepositReponse> getAllDeposit(){
-       return depositRepository.findAll()
-               .stream().map((c)->
-                   modelMapper.map(c,DepositReponse.class)).collect(Collectors.toList());
-    }
+
 
     @Override
     public String uploadProof(MultipartFile proof,Long id){

@@ -8,8 +8,8 @@ import java.util.List;
 
 public interface DepositService {
     String withdraw(Double amount,String coin);
-    List<DepositReponse> getAllDeposit();
-    List<DepositReponse> getAllDepositByUser();
+
+    List<DepositReponse> getAllDepositByUser(Long userId);
     String uploadProof(MultipartFile proof, Long id);
 
     String TradeCoin(TradeCoinRequest tradeCoinRequest);

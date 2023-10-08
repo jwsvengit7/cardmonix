@@ -60,6 +60,17 @@ public class UserAuthController {
         return new ResponseEntity<>(apiResponse,HttpStatus.OK);
     }
 
+    @CrossOrigin("*")
+    @PostMapping("/logout")
+    public ResponseEntity<ApiResponse<String>> loginUser(@RequestHeader("Authorization") String authorization){
+        ApiResponse<String> apiResponse= new ApiResponse<>(logout(authorization));
+        return new ResponseEntity<>(apiResponse,HttpStatus.OK);
+    }
+    private String logout(String authorization){
+        return authorization;
+
+    }
+
 
 
 

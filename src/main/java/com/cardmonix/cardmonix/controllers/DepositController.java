@@ -19,17 +19,12 @@ import java.util.List;
 public class DepositController {
     private final DepositService depositService;
     @CrossOrigin("*")
-    @GetMapping("/get-deposit-byUser")
-    public ResponseEntity<ApiResponse<List<DepositReponse>>> getDeposit(){
-        ApiResponse<List<DepositReponse>> apiResponse = new ApiResponse<>(depositService.getAllDepositByUser());
+    @GetMapping("/get-deposit-byUser/{userId}")
+    public ResponseEntity<ApiResponse<List<DepositReponse>>> getDeposit(@PathVariable Long userId){
+        ApiResponse<List<DepositReponse>> apiResponse = new ApiResponse<>(depositService.getAllDepositByUser(userId));
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
-    @CrossOrigin("*")
-    @GetMapping("/get-all-deposit")
-    public ResponseEntity<ApiResponse<List<DepositReponse>>> getAllDeposit(){
-        ApiResponse<List<DepositReponse>> apiResponse = new ApiResponse<>(depositService.getAllDeposit());
-        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
-    }
+
     @CrossOrigin("*")
     @PostMapping("/buy-coin")
     public ResponseEntity<ApiResponse<String>> buyCoin(@RequestBody TradeCoinRequest tradeCoinRequest){

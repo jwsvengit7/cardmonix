@@ -1,6 +1,7 @@
 package com.cardmonix.cardmonix.controllers;
 
 import com.cardmonix.cardmonix.response.ApiResponse;
+import com.cardmonix.cardmonix.response.DepositReponse;
 import com.cardmonix.cardmonix.response.UserResponse;
 import com.cardmonix.cardmonix.service.AdminService;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,12 @@ public class AdminController {
     @GetMapping("/confirm-deposit/{id}")
     public ResponseEntity<ApiResponse<String>> confirmDeposit(@PathVariable Long id){
         ApiResponse<String> apiResponse = new ApiResponse<>(adminService.confirmDeposit(id));
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+    }
+    @CrossOrigin("*")
+    @GetMapping("/get-all-deposit")
+    public ResponseEntity<ApiResponse<List<DepositReponse>>> getAllDeposit(){
+        ApiResponse<List<DepositReponse>> apiResponse = new ApiResponse<>(adminService.getAllDeposit());
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
